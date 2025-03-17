@@ -11,8 +11,12 @@ describe("CallerAddress", function () {
         callerAddress = await CallerAddress.connect(owner).deploy();  // 用 owner 部署
         await callerAddress.waitForDeployment();
         console.log("gantenAddress deployed at:", callerAddress.target);
-        console.log("owner address:", owner.address);
-        console.log("user address:", owner.address);
+        // 获取并打印余额
+        const ownerBalance = await owner.provider.getBalance(owner.address);
+        console.log("owner balance:", ownerBalance);
+
+        const userBalance = await user.provider.getBalance(user.address);
+        console.log("user balance:", userBalance);
     });
 
     it("step0: should return the owner address", async function () {
