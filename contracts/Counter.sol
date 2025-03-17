@@ -12,6 +12,14 @@ contract Counter {
         counter = counter + 1;
     }
 
+    function add(uint n) public {
+        counter = counter + n;
+    }
+
+    function subtract(uint n) public {
+        counter = counter - n;
+    }
+
     function get() public view returns (uint) {
         return counter;
     }
