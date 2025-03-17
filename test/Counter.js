@@ -21,7 +21,7 @@ describe("Counter", function () {
     });
 
     it("step2: add 1 equal 1", async function () {
-    let tx = await counter.count();
+    let tx = await counter.add(1);
     await tx.wait();
     expect(await counter.get()).to.equal(1);
     });

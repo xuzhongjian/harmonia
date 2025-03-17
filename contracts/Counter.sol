@@ -2,25 +2,20 @@
 pragma solidity ^0.8.0;
 
 contract Counter {
-    uint counter;
-
-    constructor() {
-        counter = 0;
-    }
-
-    function count() public {
-        counter = counter + 1;
+    uint count;
+    constructor(){
+        count = 0;
     }
 
     function add(uint n) public {
-        counter = counter + n;
+        count = count + n;
     }
 
     function subtract(uint n) public {
-        counter = counter - n;
+        count = count - n;
     }
 
-    function get() public view returns (uint) {
-        return counter;
+    function get() public view returns (uint){
+        return count;
     }
 }
