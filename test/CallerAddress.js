@@ -28,4 +28,13 @@ describe("CallerAddress", function () {
         const userAddress = await callerAddress.connect(user).getCallerAddress();
         expect(userAddress).to.equal(user.address);
     });
+
+    it("step2: should return user address", async function () {
+        const userAddress = await callerAddress.connect(user).transferToCaller();
+        const ownerBalance = await owner.provider.getBalance(owner.address);
+        console.log("owner balance:", ownerBalance);
+
+        const userBalance = await user.provider.getBalance(user.address);
+        console.log("user balance:", userBalance);
+    });
 });
