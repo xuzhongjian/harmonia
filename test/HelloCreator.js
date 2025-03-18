@@ -1,3 +1,4 @@
+const { deployContract } = require("./helpers/deploy");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -10,12 +11,10 @@ describe("Hello and HelloCreator Contract", function () {
         [owner, user] = await ethers.getSigners();
 
         // 部署 HelloCreator
-        HelloCreator = await ethers.getContractFactory("HelloCreator");
-        helloCreator = await HelloCreator.deploy();
-        await helloCreator.waitForDeployment();
+        helloCreator = await deployContract("HelloCreator", owner, "5");
+
         console.log("helloCreator deployed at:", helloCreator.target);
         console.log("owner address of helloCreator:", owner.address);
-
     });
 
     it("应该成功创建 Hello 合约", async function () {
@@ -34,7 +33,7 @@ describe("Hello and HelloCreator Contract", function () {
         hello = await Hello.attach(helloAddress);
 
         // 测试 sayHi()
-        expect(await hello.connect(user).sayHi()).to.equal(10);
+        expect(await hello.connect(user).sayHello()).to.equal(10);
 
         ownerAddress = await hello.returnOwner();
 

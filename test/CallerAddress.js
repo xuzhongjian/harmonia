@@ -1,9 +1,10 @@
+const { deployContract } = require("./helpers/deploy");
+const { getBalance } = require("./helpers/balance");
 const { ethers } = require("hardhat");
 const { expect } = require("chai");
 
 let gantenAddress;
 let owner, user;  // 这里先声明变量
-const INIT_BALANCE = ethers.parseEther("1000");
 
 describe("CallerAddress", function () {
     before(async function () {
@@ -11,18 +12,11 @@ describe("CallerAddress", function () {
         [owner, user] = await ethers.getSigners();
 
         // 使用 owner 账户部署合约，并且给定一定的余额
-        const CallerAddress = await ethers.getContractFactory("CallerAddress");
-        callerAddress = await CallerAddress.connect(owner).deploy({ value: INIT_BALANCE });
-        await callerAddress.waitForDeployment();
-        console.log("gantenAddress deployed at:", callerAddress.target);
+        callerAddress = await deployContract("CallerAddress", owner, "1000");
 
         // 获取并打印两个账户的余额
-        const ownerBalance = await owner.provider.getBalance(owner.address);
-        console.log("start: owner balance:", ownerBalance);
-        const userBalance = await user.provider.getBalance(user.address);
-        console.log("start: user balance:", userBalance);
-        const contractBalance = await callerAddress.getContractBalance();
-        console.log("start: contract balance:", contractBalance);
+        await getBalance(user, "user");
+        await getBalance(owner, "owner");
     });
 
     it("step0: should return the owner address", async function () {
@@ -40,12 +34,8 @@ describe("CallerAddress", function () {
         const tx = await callerAddress.connect(user).transferToCaller();
         await tx.wait();
 
-        // 打印最后的两个账户的余额
-        const ownerBalance = await owner.provider.getBalance(owner.address);
-        console.log("end: owner balance:", ownerBalance);
-        const userBalance = await user.provider.getBalance(user.address);
-        console.log("end: user balance:", userBalance);
-        const contractBalance = await callerAddress.getContractBalance();
-        console.log("end: contract balance:", contractBalance);
+        // 获取并打印两个账户的余额
+        await getBalance(user, "user");
+        await getBalance(owner, "owner");
     });
 });
