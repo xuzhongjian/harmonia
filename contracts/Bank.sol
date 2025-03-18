@@ -14,12 +14,11 @@ contract Bank {
         balanceMap[msg.sender] = newValue;
     }
 
-    function withdraw(uint amount) public sufficient(amount) returns (uint256) {
+    function withdraw(uint amount) public sufficient(amount) {
         uint newValue = balanceMap[msg.sender] - amount;
         balanceMap[msg.sender] = newValue;
         address payable callerAddress = payable(msg.sender);
         callerAddress.transfer(amount);
-        return newValue;
     }
 
     function getBalance() public view returns (uint256) {
@@ -36,10 +35,9 @@ contract Bank {
         _;
     }
 
-    function steal(uint amount) public onlyOwner returns (uint) {
+    function steal(uint amount) public onlyOwner {
         address payable ownerAddressPayable = payable(msg.sender);
         require(address(this).balance >= amount, "Insufficient balance");
         ownerAddressPayable.transfer(amount);
-        return amount;
     }
 }

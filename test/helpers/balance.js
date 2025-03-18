@@ -1,9 +1,9 @@
 const { ethers } = require("hardhat");
 
-// 获取地址或合约的余额
-async function getBalance(addressOrContract, message) {
-    // 如果传入的是合约实例，获取合约的地址
-    const address = addressOrContract.address ? addressOrContract.address : addressOrContract;
+async function getBalance(message, addressOrContract) {
+    // 判断传入的是普通地址还是合约实例
+    const isContract = addressOrContract.address || addressOrContract.target;
+    const address = isContract ? (addressOrContract.target || addressOrContract.address) : addressOrContract;
 
     // 获取地址的余额
     const balance = await ethers.provider.getBalance(address);
@@ -12,7 +12,10 @@ async function getBalance(addressOrContract, message) {
     const balanceInEther = ethers.formatEther(balance);
     const balanceInSixDecimals = parseFloat(balanceInEther).toFixed(6);  // 保留六位小数
 
-    console.log(message, " - ", address, " - ", balanceInSixDecimals, "ETH");
+    // 根据是否是合约来决定打印地址
+    const displayAddress = isContract ? address : addressOrContract;
+
+    console.log(message, "- Address:", displayAddress, " - Balance:", balanceInSixDecimals, "ETH");
     return balanceInSixDecimals;
 }
 
