@@ -45,7 +45,6 @@ describe("Bank", function () {
         const withdrawAmount = 80;
         const prevBalance = await getBalance("account1", account1);
         await bank.connect(account1).withdraw(toWei(withdrawAmount));
-
         const bankBalance = toEther(await bank.connect(account1).getBalance());
         console.log("bank balance", bankBalance);
         const curBalance = await getBalance("after withdraw, account1", account1);
@@ -57,9 +56,11 @@ describe("Bank", function () {
 
     it("step6: test steal", async function () {
         const contractBalance = await getBalance("contract balance", bank);
-
         await bank.connect(owner).steal(toWei(contractBalance * 0.9));
     });
 
-
+    it("step6: test steal", async function () {
+        const contractBalance = await getBalance("contract balance", bank);
+        await expect(bank.connect(account1).steal(toWei(contractBalance * 0.9))).to.be.revertedWith("Only for owner");
+    });
 });
