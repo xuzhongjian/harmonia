@@ -3,7 +3,9 @@ pragma solidity ^0.8.0;
 
 contract Counter {
     uint i;
+
     constructor(){
+        
         i = 0;
     }
 
@@ -14,7 +16,6 @@ contract Counter {
     function add(uint m) public {
         i = i + m;
     }
-
 
     function subtract(uint m) public {
         i = i - m;

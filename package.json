@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@uniswap/v2-core": "^1.0.1",
     "dotenv": "^16.4.7"
   }
 }
